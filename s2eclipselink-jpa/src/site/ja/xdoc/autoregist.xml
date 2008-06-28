@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<properties>
+		<title>クラス／ファイルの自動登録</title>
+	</properties>
+	<body>
+		<p>S2EclipseLink-JPAには、永続クラスやマッピングファイルを自動的に検出し永続ユニットに登録する機能があります。
+		<code>検出/登録は<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeploy">SMART deploy</a>の命名規約を利用して行われます。</code></p>
+		<section name="自動検出">
+		<p>永続クラスを自動検出するには次の条件を満たす必要があります。</p>
+		<ul>
+          <li>SMART deployが有効である</li>
+          <li><code>クラスにEntity</code>アノテーション、<code>Embeddable</code>アノテーション、<code>MappedSuperclass</code>アノテーションのいずれかが付与されている</li>
+			<li>クラスがentityパッケージまたはentityパッケージのサブパッケージに存在する<br />
+          （entityパッケージとは<code>convention.dicon</code>に指定したルートパッケージの直下の個別パッケージが「<code>entity</code>」という名前のパッケージです。例えば、ルートパッケージが「hoge.example」の場合、「hoge.example.entity」がentityパッケージです。）</li>
+		</ul>
+		<p>マッピングファイルを自動検出するには次の条件を満たす必要があります。</p>
+		<ul>
+			<li>SMART deployが有効である </li>
+          	<li>マッピングファイルの名称が<code><var>Xxx</var>Orm.xml</code>(<code><var>Xxx</var></code>は任意の名称)である </li>
+          	<li>マッピングファイルがentityパッケージまたはentityパッケージのサブパッケージに存在する、もしくはdaoパッケージまたはdaoパッケージのサブパッケージに存在する<br />
+          （daoパッケージとは<code>convention.dicon</code>に指定したルートパッケージの直下の個別パッケージが「<code>dao</code>」という名前のパッケージです。例えば、ルートパッケージが「hoge.example」の場合、「hoge.example.dao」がdaoパッケージです。）</li>
+        </ul>
+		<p>JPA標準のマッピングファイルである<code>META-INF/orm.xml</code>は、SMART deployの有効/無効にかかわらずEclipseLinkにより自動的に読み込まれます。</p>
+		</section>
+		<section name="永続ユニット毎の自動登録">
+		<p>自動検出された永続クラスとマッピングファイルは以下の規則により特定の永続ユニットに登録されます。この規則は複数の永続ユニットを同時に利用する場合に特に重要です。複数の永続ユニットを使う場合の設定については<a href="multiunit.html">複数Unitの使用</a>を参照してください。</p>
+    	<p>永続クラスもしくはマッピングファイルがentityパッケージ（もしくはdaoパッケージ）直下に置かれている場合、それらはデフォルトの永続ユニット（<code>persistenceUnit</code>）に登録されます。</p>
+    	<p>永続クラスもしくはマッピングファイルがentityパッケージ（もしくはdaoパッケージ）のサブパッケージに置かれている場合、それらは<code><var>xxx</var>PersistenceUnit</code>(<code><var>xxx</var></code>はサブパッケージ名)という名前の永続ユニットに登録されます。</p>
+    	<p>なお、JPA標準のマッピングファイルである<code>META-INF/orm.xml</code>は、EclipseLinkによりすべての永続ユニットに自動的に登録されます。</p>   
+        </section>
+        <section name="自動登録の例">
+		<p>entityパッケージがhoge.example.entityである場合、hoge.example.entityに属するHogeクラスとサブパッケージhoge.example.entity.fooに属するBarクラスは異なる永続ユニットに登録されます。</p>
+<table>
+<tbody>
+<tr>
+<th>登録対象である永続クラスの完全修飾名</th>
+<th>登録先の永続ユニット名</th>
+<th>説明</th>
+</tr>
+<tr>
+<td>hoge.example.entity.Hoge</td>
+<td>persistenceUnit</td>
+<td>デフォルトの永続ユニットである「<code>persistenceUnit</code>」に登録されます。</td>
+</tr>
+<tr>
+<td>hoge.example.entity.foo.Bar</td>
+<td>fooPeristenceUnit</td>
+<td>サブパッケージ「<code>foo</code>」とサフィックス「<code>PersistenceUnit</code>」を組み合わせた名称を持つ永続ユニット「<code>fooPersistenceUnit</code>」に登録されます。</td>
+</tr>
+</tbody>
+</table>
+		</section>
+		<section name="EclipseLinkの自動検出機能との違い">
+        EclipseLinkにも自動検出機能が備わっています。S2EclipseLink-JPAの機能との違いを以下に示します。
+        <table>
+          <tbody>
+            <tr>
+              <th></th>
+              <th>S2EclipseLink-JPA</th>
+              <th>EclipseLink</th>
+            </tr>
+            <tr>
+              <td>検出の対象</td>
+              <td>・永続クラス<br />
+              ・xxxOrm.xml</td>
+              <td>・永続クラス<br />
+              ・META－INF/orm.xml</td>
+            </tr>
+            <tr>
+              <td>検出の範囲</td>
+              <td>・entityパッケージとそのサブパッケージ<br />
+              ・daoパッケージとそのサブパッケージ</td>
+              <td>・persistence.xmlが属するディレクトリ<br />
+              ・persistence.xmlが属するjarファイル<br />
+              ・persistence.xmのjar-file要素に指定したjarファイル</td>
+            </tr>
+          </tbody>
+        </table>
+        2つの機能は併用することが可能です。
+        </section>
+	</body>
+</document>

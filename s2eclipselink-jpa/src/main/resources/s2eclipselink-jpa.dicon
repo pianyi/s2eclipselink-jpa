@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN" 
+	"http://www.seasar.org/dtd/components24.dtd">
+<components>
+	<include path="javaee5.dicon"/>
+
+	<component class="org.seasar.eclipselink.jpa.impl.S2EclipseLinkDialect"/>
+	<component class="org.seasar.eclipselink.jpa.metadata.EclipseLinkEntityDescProvider"/>
+	<component class="org.seasar.eclipselink.jpa.unit.EclipseLinkEntityReaderProvider"/>
+</components>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<properties>
+		<title>複数の永続ユニットの使い方</title>
+	</properties>
+	<body>
+	<section name="複数の永続ユニットの使い方">
+	<p>複数のJPA実装を使う場合や、複数のJDBC DataSourceを使う場合は、複数の永続ユニットを作成します。そして、それぞれの永続ユニットに対応する<code>jpa.dicon</code>のコピーを用意し、<code>jpa.dicon</code>からインクルードします。</p>
+	<ul>
+		<li><code>persistence.xml</code>に複数の永続ユニットを定義します。
+<pre>&lt;persistence&gt;
+	&lt;persistence-unit name=&quot;<strong>persistenceUnit</strong>&quot; transaction-type=&quot;JTA&quot;&gt;
+		&lt;jta-data-source&gt;<strong>jdbc/dataSource</strong>&lt;/jta-data-source&gt;
+	．．．
+	&lt;/persistence-unit&gt;
+	&lt;persistence-unit name=&quot;<strong>fooPersistenceUnit</strong>&quot; transaction-type=&quot;JTA&quot;&gt;
+		&lt;jta-data-source&gt;<strong>jdbc/dataSource</strong>&lt;/jta-data-source&gt;
+	．．．
+	&lt;/persistence-unit&gt;</pre>
+</li>
+<li><code>pu.dicon</code>を定義します。<code>jpa.dicon</code>をコピーします。
+<pre>&lt;components initializeOnCreate=&quot;true&quot;&gt;
+	&lt;include path=&quot;s2eclipselink-jpa.dicon&quot;/&gt;
+
+	&lt;component name=&quot;<strong>persistenceUnitProvider</strong>&quot;
+		class=&quot;org.seasar.framework.jpa.impl.ContainerPersistenceUnitProvider&quot;&gt;
+		&lt;property name=&quot;unitName&quot;&gt;&quot;<strong>persistenceUnit</strong>&quot;&lt;/property&gt;
+		&lt;property name=&quot;providerClassName&quot;&gt;
+			&quot;org.eclipse.persistence.jpa.PersistenceProvider&quot;
+		&lt;/property&gt;
+	&lt;/component&gt;
+
+	&lt;component name=&quot;<strong>entityManagerFactory</strong>&quot; class=&quot;javax.persistence.EntityManagerFactory&quot;&gt;
+		persistenceUnitProvider.entityManagerFactory
+	&lt;/component&gt;
+
+	&lt;component name=&quot;<strong>entityManager</strong>&quot;
+		class=&quot;org.seasar.framework.jpa.impl.TxScopedEntityManagerProxy&quot;&gt;
+		&lt;aspect pointcut=&quot;createNamedQuery&quot;&gt;
+			&lt;component class=&quot;org.seasar.eclipselink.jpa.aop.interceptors.S2EclipseLinkEntityManagerInterceptor&quot;/&gt;
+		&lt;/aspect&gt;
+	&lt;/component&gt;
+&lt;/components&gt;</pre>
+</li>
+<li><code>foo-pu.dicon</code>を定義します。<code>jpa.dicon</code>をコピーし、次のようにします。
+<pre>&lt;components initializeOnCreate=&quot;true&quot;&gt;
+	&lt;include path=&quot;s2eclipselink-jpa.dicon&quot;/&gt;
+
+	&lt;component name=&quot;<strong>fooPersistenceUnitProvider</strong>&quot;
+		class=&quot;org.seasar.framework.jpa.impl.ContainerPersistenceUnitProvider&quot;&gt;
+		&lt;property name=&quot;unitName&quot;&gt;&quot;<strong>fooPersistenceUnit</strong>&quot;&lt;/property&gt;
+		&lt;property name=&quot;providerClassName&quot;&gt;
+			&quot;org.eclipse.persistence.jpa.PersistenceProvider&quot;
+		&lt;/property&gt;
+	&lt;/component&gt;
+
+	&lt;component name=&quot;<strong>fooEntityManagerFactory</strong>&quot; class=&quot;javax.persistence.EntityManagerFactory&quot;&gt;
+		<strong>fooPersistenceUnitProvider</strong>.entityManagerFactory
+	&lt;/component&gt;
+
+	&lt;component name=&quot;<strong>fooEntityManager</strong>&quot;
+		class=&quot;org.seasar.framework.jpa.impl.TxScopedEntityManagerProxy&quot;&gt;
+		&lt;aspect pointcut=&quot;createNamedQuery&quot;&gt;
+			&lt;component class=&quot;org.seasar.eclipselink.jpa.aop.interceptors.S2EclipseLinkEntityManagerInterceptor&quot;/&gt;
+		&lt;/aspect&gt;
+	&lt;/component&gt;
+&lt;/components&gt;</pre>
+</li>
+<li>jpa.diconを書き換え<code>pu.dicon</code>と<code>foo-pu.dicon</code>をインクルードします。
+<pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot; 
+    "http://www.seasar.org/dtd/components24.dtd"&gt;
+&lt;components&gt;
+  &lt;include path="<strong>pu.dicon</strong>"/&gt;
+  &lt;include path="<strong>foo-pu.dicon</strong>"/&gt;
+&lt;/components&gt;</pre>
+</li>
+<li>エンティティマネージャーを使用するDaoのクラスはプロパティでオブジェクトを受け取ります。プロパティ名には使用したいエンティティマネージャーのコンポーネント名を使用してください。
+<pre>public void setFooEntityManager(EntityManager fooEntityManager) { 
+    this.<strong>fooEntityManager</strong> = fooEntityManager;
+}</pre>
+          または、JPAのPersistenceContextアノテーションを使用してエンティティマネージャーを設定します。unitName要素には使用したい永続コンテキストの名称を指定してください。
+          <pre>@PersistenceContext(unitName="<strong>fooPersistenceUnit</strong>")
+private EntityManager em</pre>
+</li>
+</ul>
+</section>
+	</body>
+</document>

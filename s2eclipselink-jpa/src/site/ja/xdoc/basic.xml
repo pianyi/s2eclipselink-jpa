@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<properties>
+		<title>基本的な使い方</title>
+	</properties>
+	<body>
+		<p>S2EclipseLink-JPAの機能を使用するにあたり、エンティティ、Dao(.java)、diconファイル、persistence.xmlの作成が必要になります。</p>
+		<section name="エンティティ">
+		<p>Persistence APIの仕様に合わせてエンティティを作成します。</p>
+		<p>エンティティクラスの自動検出と永続ユニットへの自答登録を行うためにエンティティは特定のパッケージに配置します。
+		詳細は<a href="autoregist.html">クラスの自動登録</a>を参照してください。</p>
+		</section>
+		<section name="Dao(Data Access Object)">
+		<p>Daoの実装方法</p>
+		<ul>
+			<li>
+			<code>EntityManager</code>型のフィールドを定義し、コンストラクタあるいはプロパティ経由で実装オブジェクトを受け取るように記述します。
+			<div class="source"><pre>
+private EntityManager entityManager;
+
+public void setEntityManager(EntityManager entityManager) {
+	this.entityManager = entityManager;
+}
+</pre></div>
+			または、JPAの<code>PersistenceContext</code>アノテーションを利用して実装オブジェクトを設定してください。
+			<div class="source"><pre>
+@PersistenceContext
+private EntityManager entityManager;
+</pre></div>
+			</li>
+			<li>各メソッドで<code>EntityManager</code>に対する処理を記述します。
+			<div class="source"><pre>
+public Employee getEmployee(int empno) {
+	return entityManager.find(Employee.class, 7788);
+}
+</pre></div>
+			</li>
+		</ul>
+		</section>
+		<section name="diconファイル">
+		<ul>
+			<li>jpa.dionを設定します。以下のjpa.diconはs2eclipselink-jpa/resourcesに含まれるものと同一です（ただし改行位置やインデントの桁数は異なります）。
+			<div class="source"><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot;
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components initializeOnCreate=&quot;true&quot;&gt;
+	&lt;include path=&quot;s2eclipselink-jpa.dicon&quot;/&gt;
+
+	&lt;component name=&quot;persistenceUnitProvider&quot;
+		class=&quot;org.seasar.framework.jpa.impl.ContainerPersistenceUnitProvider&quot;&gt;
+		&lt;property name=&quot;unitName&quot;&gt;&quot;persistenceUnit&quot;&lt;/property&gt;
+		&lt;property name=&quot;providerClassName&quot;&gt;
+			&quot;org.eclipse.persistence.jpa.PersistenceProvider&quot;
+		&lt;/property&gt;
+	&lt;/component&gt;
+
+	&lt;component name=&quot;entityManagerFactory&quot; class=&quot;javax.persistence.EntityManagerFactory&quot;&gt;
+		persistenceUnitProvider.entityManagerFactory
+	&lt;/component&gt;
+
+	&lt;component name=&quot;entityManager&quot;
+		class=&quot;org.seasar.framework.jpa.impl.TxScopedEntityManagerProxy&quot;&gt;
+		&lt;aspect pointcut=&quot;createNamedQuery&quot;&gt;
+			&lt;component
+				class=&quot;org.seasar.eclipselink.jpa.aop.interceptors.S2EclipseLinkEntityManagerInterceptor&quot;/&gt;
+		&lt;/aspect&gt;
+	&lt;/component&gt;
+&lt;/components&gt;
+</pre></div>
+			persistenceUnitProviderコンポーネントのunitNameプロパティに指定する値はpersistence.xmlで定義する永続ユニット名と一致させてください。
+			</li>
+			<li>jpa.diconは他のdiconファイルやテストクラスで<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#Include">インクルード</a>して利用します。
+			<div class="source"><pre>
+&lt;components&gt;
+  &lt;include path=&quot;jpa.dicon&quot;/&gt;
+  ...
+&lt;/components&gt;
+</pre></div>
+			</li>
+			<li>永続クラスとマッピングファイルの自動検出/登録を有効にするにはSMART deployが必要です。
+			SMARAT deployの設定に必要なconvention.dicon、creator.dicon、customizer.diconについては<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeploy">SMART deploy</a>を参照してください。
+			</li>
+		</ul>
+		</section>
+		<section name="persistence.xml">
+		<ul>
+			<li>persistence.xmはJPAで定められた設定ファイルです。クラスパスの通っているディレクトリにMETA-INFディレクトリを作成しpersistence.xmlを格納します。以下のpersistence.xmlはs2eclipselink-jpa/resourcesに含まれるものと同一です（ただし改行位置やインデントの桁数は異なります）。
+          <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;persistence xmlns=&quot;http://java.sun.com/xml/ns/persistence&quot;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/persistence
+	http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd&quot;
+	version=&quot;1.0&quot;&gt;
+	&lt;persistence-unit name=&quot;persistenceUnit&quot; transaction-type=&quot;JTA&quot;&gt;
+		&lt;provider&gt;org.eclipse.persistence.jpa.PersistenceProvider&lt;/provider&gt;
+		&lt;jta-data-source&gt;jdbc/dataSource&lt;/jta-data-source&gt;
+		&lt;exclude-unlisted-classes&gt;true&lt;/exclude-unlisted-classes&gt;
+		&lt;properties&gt;
+			&lt;property name=&quot;eclipselink.target-server&quot;
+				value=&quot;org.seasar.eclipselink.jpa.platform.server.S2ServerPlatform&quot;/&gt;
+			&lt;property name=&quot;eclipselink.target-database&quot;
+				value=&quot;org.seasar.eclipselink.jpa.platform.database.H2Platform&quot;/&gt;
+			&lt;property name=&quot;eclipselink.logging.level&quot; value=&quot;FINE&quot;/&gt;
+			&lt;property name=&quot;eclipselink.cache.shared.default&quot; value=&quot;false&quot;/&gt;
+ 		&lt;/properties&gt;
+	&lt;/persistence-unit&gt;
+&lt;/persistence&gt;</pre>
+          永続ユニット名にはpersistenceUnitと指定します。<br />
+          データソース名は、jdbc.diconの<var>名前空間名.dataSourceコンポーネント名</var>と一致させてください。<br />
+          プロパティのeclipselink.target-databaseの値は使用するデータベースに合わせて変更してください。
+			</li>
+		</ul>
+		</section>
+	</body>
+</document>

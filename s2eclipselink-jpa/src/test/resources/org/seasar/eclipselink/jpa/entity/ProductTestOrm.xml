@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings
+	xmlns="http://java.sun.com/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+	version="1.0"
+>	
+	<named-query name="ProductTest.testCollection">
+		<query><![CDATA[
+SELECT
+	p
+FROM
+	Product p
+ORDER BY
+	p.id
+]]></query>
+	</named-query>
+	
+	<named-query name="ProductTest.testArrayCollection">
+		<query><![CDATA[
+SELECT
+	p
+FROM
+	Product p
+INNER JOIN FETCH
+	p.customer
+ORDER BY
+	p.id DESC
+]]></query>
+	</named-query>
+	
+</entity-mappings>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+	http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+	version="1.0">
+	<persistence-unit name="persistenceUnit" transaction-type="JTA">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<jta-data-source>jdbc/dataSource</jta-data-source>
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+		<properties>			
+			<property name="eclipselink.target-server" value="org.seasar.eclipselink.jpa.platform.server.S2ServerPlatform"/>
+			<property name="eclipselink.target-database" value="org.seasar.eclipselink.jpa.platform.database.H2Platform"/>
+			<property name="eclipselink.logging.level" value="FINE"/>
+
+        	<!-- for test -->
+        	<property name="eclipselink.cache.shared.default" value="false"/>
+
+ 		</properties>
+	</persistence-unit>
+</persistence>

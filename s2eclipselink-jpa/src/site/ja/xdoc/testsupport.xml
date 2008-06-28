@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<properties>
+		<title>テストのサポート</title>
+	</properties>
+	<body>
+		<section name="EntitiyMnanagerFactoryをキャッシュした効率の良いテスト">
+        <p>EclipseLinkの初期化は比較的重たい処理です。通常、JUnitでEclipseLinkを使用するとテストケース毎にEntitiyMnanagerFactoryが初期化されるため時間がかかります。Seasar2では、これを避けるためEntitiyMnanagerFactoryをキャッシュして複数のテストケース間で共有する仕組みを提供します。</p> 
+		<p>S2UnitやS2JUnit4またはそれらの派生クラスでテストが実行される限り、この仕組みはデフォルトで有効です。</p>
+		<p>キャッシュ機能を無効にしたい場合には、env_ut.txtというファイルをクラスパスに通し、ファイルに「ut」以外の文字で始まる環境名を記述してください。</p>
+		</section>
+		<section name="S2JUnit4を使った複雑なマッピングのテスト">
+        <p>JPAではさまざまなマッピング方法がサポートされていますが、継承を使ったマッピングなどは意図通りにマッピングできたかテストするのが難しいことがあります。<a href="http://s2container.seasar.org/2.4/ja/S2JUnit4.html">S2JUnit4</a>を利用すると、エンティティを表形式(Seasar2のDataSet)に変換でき、Excelで用意した期待値と比較可能なのでテストが容易です。</p>
+        </section>
+        <section name="サンプルコード">
+        <p>以下のコードはS2Hibernate-JPAに含まれるサンプルコード（examples.entityreader.FileTest.java）からの抜粋です。</p>    
+<pre>import static <b>org.seasar.framework.unit.S2Assert.*</b>;
+
+@RunWith(Seasar2.class)
+public class FileTest {
+    
+    private TestContext context;
+    private EntityManager em;
+    ．．．
+    public void polymorphicQuery() throws Exception {
+        Folder root = new Folder();
+        root.setName("root");
+        Folder folder = new Folder();
+        folder.setName("folder");
+        folder.setParent(root);
+        Document document = new Document();
+        document.setName("document");
+        document.setSize(100);
+        document.setParent(folder);
+        folder.getChildren().add(document);
+
+        em.persist(root);
+        em.persist(folder);
+        em.persist(document);
+
+        Query query = em.createQuery("SELECT f FROM File f ORDER BY f.name");
+        <strong>assertEntityEquals</strong>(context.getExpected(), query.getResultList());
+    }
+}</pre> 
+<p>このコードにはFolderクラスとDocumentクラスが登場しますが、これらはともにFileクラスを継承したエンティティです。さらにFileクラスもエンティティであり、継承戦略にはJoined Subclassが使用されています。したがって、このテストで実行されるJPQLは3つのテーブルにまたがるデータを返します。org.seasar.framework.unit.S2AssertクラスのassertEntityEqualsを使用することで、3つのテーブルにまたがるデータを含んだ期待値（context.getExpected()で取得）とJPQLの戻り値（query.getResultList()で取得）を比較検証することができます。</p>
+        <p>ここでは、継承のマッピングを例に挙げましたが、その他のマッピングに対しても同様のテストが可能です。</p>
+        <p>
+    S2AssertクラスにはオーバーロードされたstaticなassertEntityEqualsメソッドが4つあります。期待値にはDataSetを、実際値には次のいずれかの値を渡すことができます。</p>
+<ul>
+<li>単一のエンティティ</li>
+<li>エンティティを要素とするコレクション</li><li>エンティティのオブジェクト配列を要素とするコレクション </li>
+</ul>
+		</section>
+	</body>
+</document>

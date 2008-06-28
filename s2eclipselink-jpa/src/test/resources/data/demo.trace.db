@@ -1,0 +1,197 @@
+06-07 15:25:45 jdbc[2]: SQLException
+org.h2.jdbc.JdbcSQLException: SQLステートメントに文法エラーがあります INSERT INTO NORMAL(ID,NAME,AMOUNT,START_DATE,CREATED_AT,LOCK_VERSION) VALUES
+(1,'名前１',12300,PARSEDATETIME('2005-03-02','yyyy-MM-dd'),PARSEDATETIME('2006-05-02 22:34:25','yyyy-MM-dd HH:mm:ss'),0),
+(2,'名前２',22340,PARSEDATETIME('2003-05-30','yyyy-MM-dd'),PARSEDATETIME('2007-10-21 05:39:55','yyyy-MM-dd HH:mm:ss'),0)
+CREATE[*] SEQUENCE SEQ_NOMAL START WITH 3
+Syntax error in SQL statement INSERT INTO NORMAL(ID,NAME,AMOUNT,START_DATE,CREATED_AT,LOCK_VERSION) VALUES
+(1,'名前１',12300,PARSEDATETIME('2005-03-02','yyyy-MM-dd'),PARSEDATETIME('2006-05-02 22:34:25','yyyy-MM-dd HH:mm:ss'),0),
+(2,'名前２',22340,PARSEDATETIME('2003-05-30','yyyy-MM-dd'),PARSEDATETIME('2007-10-21 05:39:55','yyyy-MM-dd HH:mm:ss'),0)
+CREATE[*] SEQUENCE SEQ_NOMAL START WITH 3; SQL statement:
+INSERT INTO NORMAL(ID,NAME,AMOUNT,START_DATE,CREATED_AT,LOCK_VERSION) VALUES
+(1,'名前１',12300,PARSEDATETIME('2005-03-02','yyyy-MM-dd'),PARSEDATETIME('2006-05-02 22:34:25','yyyy-MM-dd HH:mm:ss'),0),
+(2,'名前２',22340,PARSEDATETIME('2003-05-30','yyyy-MM-dd'),PARSEDATETIME('2007-10-21 05:39:55','yyyy-MM-dd HH:mm:ss'),0)
+CREATE SEQUENCE SEQ_NOMAL START WITH 3 [42000-67]
+	at org.h2.message.Message.getSQLException(Message.java:89)
+	at org.h2.message.Message.getSQLException(Message.java:93)
+	at org.h2.message.Message.getSQLException(Message.java:71)
+	at org.h2.message.Message.getSyntaxError(Message.java:98)
+	at org.h2.command.Parser.getSyntaxError(Parser.java:446)
+	at org.h2.command.Parser.prepareCommand(Parser.java:226)
+	at org.h2.engine.Session.prepareLocal(Session.java:215)
+	at org.h2.engine.Session.prepareCommand(Session.java:197)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1009)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:141)
+	at org.h2.server.web.WebThread.getResult(WebThread.java:1559)
+	at org.h2.server.web.WebThread.query(WebThread.java:1129)
+	at org.h2.server.web.WebThread.process(WebThread.java:387)
+	at org.h2.server.web.WebThread.processRequest(WebThread.java:143)
+	at org.h2.server.web.WebThread.run(WebThread.java:170)
+06-07 16:39:24 jdbc[2]: SQLException
+org.h2.jdbc.JdbcSQLException: 不明なデータ型: )
+Unknown data type: ); SQL statement:
+CREATE TABLE EMBEDDEDSAMPLE (
+	PK1 INTEGER
+	,PK2 DATE
+	,NAME
+) [50004-67]
+	at org.h2.message.Message.getSQLException(Message.java:89)
+	at org.h2.message.Message.getSQLException(Message.java:93)
+	at org.h2.message.Message.getSQLException(Message.java:71)
+	at org.h2.command.Parser.parseColumn(Parser.java:3098)
+	at org.h2.command.Parser.parseColumnForTable(Parser.java:2995)
+	at org.h2.command.Parser.parseCreateTable(Parser.java:4344)
+	at org.h2.command.Parser.parseCreate(Parser.java:3202)
+	at org.h2.command.Parser.parsePrepared(Parser.java:299)
+	at org.h2.command.Parser.parse(Parser.java:266)
+	at org.h2.command.Parser.parse(Parser.java:238)
+	at org.h2.command.Parser.prepareCommand(Parser.java:210)
+	at org.h2.engine.Session.prepareLocal(Session.java:215)
+	at org.h2.engine.Session.prepareCommand(Session.java:197)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1009)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:141)
+	at org.h2.server.web.WebThread.getResult(WebThread.java:1559)
+	at org.h2.server.web.WebThread.query(WebThread.java:1129)
+	at org.h2.server.web.WebThread.process(WebThread.java:387)
+	at org.h2.server.web.WebThread.processRequest(WebThread.java:143)
+	at org.h2.server.web.WebThread.run(WebThread.java:170)
+06-07 16:39:24 jdbc[2]: SQLException
+org.h2.jdbc.JdbcSQLException: テーブル EMBEDDEDSAMPLE が見つかりません
+Table EMBEDDEDSAMPLE not found; SQL statement:
+INSERT INTO EMBEDDEDSAMPLE(PK1,PK2,NAME) VALUES
+(1,PARSEDATETIME('2008-01-03', 'yyyy-MM-dd'),'名前１'),
+(2,PARSEDATETIME('2006-03-30', 'yyyy-MM-dd'),'名前２') [42102-67]
+	at org.h2.message.Message.getSQLException(Message.java:89)
+	at org.h2.message.Message.getSQLException(Message.java:93)
+	at org.h2.message.Message.getSQLException(Message.java:71)
+	at org.h2.command.Parser.readTableOrView(Parser.java:3993)
+	at org.h2.command.Parser.readTableOrView(Parser.java:3973)
+	at org.h2.command.Parser.parseInsert(Parser.java:798)
+	at org.h2.command.Parser.parsePrepared(Parser.java:344)
+	at org.h2.command.Parser.parse(Parser.java:266)
+	at org.h2.command.Parser.parse(Parser.java:238)
+	at org.h2.command.Parser.prepareCommand(Parser.java:210)
+	at org.h2.engine.Session.prepareLocal(Session.java:215)
+	at org.h2.engine.Session.prepareCommand(Session.java:197)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1009)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:141)
+	at org.h2.server.web.WebThread.getResult(WebThread.java:1559)
+	at org.h2.server.web.WebThread.query(WebThread.java:1129)
+	at org.h2.server.web.WebThread.process(WebThread.java:387)
+	at org.h2.server.web.WebThread.processRequest(WebThread.java:143)
+	at org.h2.server.web.WebThread.run(WebThread.java:170)
+06-08 10:51:28 jdbc[2]: SQLException
+org.h2.jdbc.JdbcSQLException: テーブル JOINEDSAMPLE が見つかりません
+Table JOINEDSAMPLE not found; SQL statement:
+INSERT INTO JOINEDSAMPLE(ID,D_NAME) VALUES
+(1,'名前１'),
+(2,'名前２'),
+(3,'名前３') [42102-67]
+	at org.h2.message.Message.getSQLException(Message.java:89)
+	at org.h2.message.Message.getSQLException(Message.java:93)
+	at org.h2.message.Message.getSQLException(Message.java:71)
+	at org.h2.command.Parser.readTableOrView(Parser.java:3993)
+	at org.h2.command.Parser.readTableOrView(Parser.java:3973)
+	at org.h2.command.Parser.parseInsert(Parser.java:798)
+	at org.h2.command.Parser.parsePrepared(Parser.java:344)
+	at org.h2.command.Parser.parse(Parser.java:266)
+	at org.h2.command.Parser.parse(Parser.java:238)
+	at org.h2.command.Parser.prepareCommand(Parser.java:210)
+	at org.h2.engine.Session.prepareLocal(Session.java:215)
+	at org.h2.engine.Session.prepareCommand(Session.java:197)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1009)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:141)
+	at org.h2.server.web.WebThread.getResult(WebThread.java:1559)
+	at org.h2.server.web.WebThread.query(WebThread.java:1129)
+	at org.h2.server.web.WebThread.process(WebThread.java:387)
+	at org.h2.server.web.WebThread.processRequest(WebThread.java:143)
+	at org.h2.server.web.WebThread.run(WebThread.java:170)
+06-08 10:51:28 jdbc[2]: SQLException
+org.h2.jdbc.JdbcSQLException: 参照整合性制約違反: CONSTRAINT_C6: PUBLIC.JOIND_SAMPLE_CHILD FOREIGN KEY(ID) REFERENCES PUBLIC.JOINDSAMPLE(ID)
+Referential integrity constraint violation: CONSTRAINT_C6: PUBLIC.JOIND_SAMPLE_CHILD FOREIGN KEY(ID) REFERENCES PUBLIC.JOINDSAMPLE(ID) [23002-67]
+	at org.h2.message.Message.getSQLException(Message.java:89)
+	at org.h2.message.Message.getSQLException(Message.java:93)
+	at org.h2.message.Message.getSQLException(Message.java:71)
+	at org.h2.constraint.ConstraintReferential.checkRowOwnTable(ConstraintReferential.java:283)
+	at org.h2.constraint.ConstraintReferential.checkRow(ConstraintReferential.java:231)
+	at org.h2.table.Table.fireConstraints(Table.java:581)
+	at org.h2.table.Table.fireAfterRow(Table.java:589)
+	at org.h2.command.dml.Insert.update(Insert.java:91)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:68)
+	at org.h2.command.Command.executeUpdate(Command.java:171)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:153)
+	at org.h2.server.web.WebThread.getResult(WebThread.java:1559)
+	at org.h2.server.web.WebThread.query(WebThread.java:1129)
+	at org.h2.server.web.WebThread.process(WebThread.java:387)
+	at org.h2.server.web.WebThread.processRequest(WebThread.java:143)
+	at org.h2.server.web.WebThread.run(WebThread.java:170)
+06-08 10:51:28 jdbc[2]: SQLException
+org.h2.jdbc.JdbcSQLException: 参照整合性制約違反: CONSTRAINT_64: PUBLIC.JOINDSAMPLECHILD2 FOREIGN KEY(ID) REFERENCES PUBLIC.JOINDSAMPLE(ID)
+Referential integrity constraint violation: CONSTRAINT_64: PUBLIC.JOINDSAMPLECHILD2 FOREIGN KEY(ID) REFERENCES PUBLIC.JOINDSAMPLE(ID) [23002-67]
+	at org.h2.message.Message.getSQLException(Message.java:89)
+	at org.h2.message.Message.getSQLException(Message.java:93)
+	at org.h2.message.Message.getSQLException(Message.java:71)
+	at org.h2.constraint.ConstraintReferential.checkRowOwnTable(ConstraintReferential.java:283)
+	at org.h2.constraint.ConstraintReferential.checkRow(ConstraintReferential.java:231)
+	at org.h2.table.Table.fireConstraints(Table.java:581)
+	at org.h2.table.Table.fireAfterRow(Table.java:589)
+	at org.h2.command.dml.Insert.update(Insert.java:91)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:68)
+	at org.h2.command.Command.executeUpdate(Command.java:171)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:153)
+	at org.h2.server.web.WebThread.getResult(WebThread.java:1559)
+	at org.h2.server.web.WebThread.query(WebThread.java:1129)
+	at org.h2.server.web.WebThread.process(WebThread.java:387)
+	at org.h2.server.web.WebThread.processRequest(WebThread.java:143)
+	at org.h2.server.web.WebThread.run(WebThread.java:170)
+06-15 18:32:47 jdbc[2]: SQLException
+org.h2.jdbc.JdbcSQLException: SQLステートメントに文法エラーがあります ALTER TABLE JOINDSAMPLE DTYPE[*] VARCHAR(255); 期待されるステートメント ., ADD, SET, RENAME, DROP, ALTER
+Syntax error in SQL statement ALTER TABLE JOINDSAMPLE DTYPE[*] VARCHAR(255); expected ., ADD, SET, RENAME, DROP, ALTER; SQL statement:
+ALTER TABLE JOINDSAMPLE DTYPE VARCHAR(255) [42001-67]
+	at org.h2.message.Message.getSQLException(Message.java:89)
+	at org.h2.message.Message.getSQLException(Message.java:93)
+	at org.h2.message.Message.getSyntaxError(Message.java:103)
+	at org.h2.command.Parser.getSyntaxError(Parser.java:455)
+	at org.h2.command.Parser.parseAlterTable(Parser.java:4138)
+	at org.h2.command.Parser.parseAlter(Parser.java:3591)
+	at org.h2.command.Parser.parsePrepared(Parser.java:283)
+	at org.h2.command.Parser.parse(Parser.java:266)
+	at org.h2.command.Parser.parse(Parser.java:242)
+	at org.h2.command.Parser.prepareCommand(Parser.java:210)
+	at org.h2.engine.Session.prepareLocal(Session.java:215)
+	at org.h2.engine.Session.prepareCommand(Session.java:197)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1009)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:141)
+	at org.h2.server.web.WebThread.getResult(WebThread.java:1559)
+	at org.h2.server.web.WebThread.query(WebThread.java:1129)
+	at org.h2.server.web.WebThread.process(WebThread.java:387)
+	at org.h2.server.web.WebThread.processRequest(WebThread.java:143)
+	at org.h2.server.web.WebThread.run(WebThread.java:170)
+06-15 18:39:32 jdbc[2]: SQLException
+org.h2.jdbc.JdbcSQLException: 列 P.D_TYPE が見つかりません
+Column P.D_TYPE not found; SQL statement:
+SELECT
+  P.ID
+  ,P.D_NAME
+  ,P.D_TYPE
+  ,C2.ID
+FROM
+ JOINDSAMPLE P
+LEFT OUTER JOIN
+ JOINDSAMPLECHILD2 C2
+ON
+  C2.ID = P.ID [42122-67]
+	at org.h2.message.Message.getSQLException(Message.java:89)
+	at org.h2.message.Message.getSQLException(Message.java:93)
+	at org.h2.message.Message.getSQLException(Message.java:71)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:123)
+	at org.h2.command.dml.Select.prepare(Select.java:529)
+	at org.h2.command.Parser.prepareCommand(Parser.java:211)
+	at org.h2.engine.Session.prepareLocal(Session.java:215)
+	at org.h2.engine.Session.prepareCommand(Session.java:197)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1009)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:141)
+	at org.h2.server.web.WebThread.getResult(WebThread.java:1559)
+	at org.h2.server.web.WebThread.query(WebThread.java:1129)
+	at org.h2.server.web.WebThread.process(WebThread.java:387)
+	at org.h2.server.web.WebThread.processRequest(WebThread.java:143)
+	at org.h2.server.web.WebThread.run(WebThread.java:170)

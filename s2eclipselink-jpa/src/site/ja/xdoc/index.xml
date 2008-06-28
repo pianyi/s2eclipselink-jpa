@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<properties>
+		<title>Top</title>
+	</properties>
+	<body>
+		<section name="Welcome">
+			<p>
+			S2EclipseLink-JPAは、EclipseLinkとSeasar2を連動させるためのフレームワークです。
+			S2EclipseLink-JPAによりアプリケーションはJava Persistence APIを簡単に利用することができます。
+			</p>
+			<dl>
+				<dt>概要</dt>
+				<dd><p>S2EclipseLink-JPAは以下の特徴を持っています。</p>
+				<ul>
+					<li>Seasar2で管理されているJava Transaction API(JTA)やConnectionPoolと<a href="http://www.eclipse.org/eclipselink/">EclipseLink</a>を連動出来ます。</li>
+					<li>アプリケーションサーバ上で実行しなくてもEJB3のJava Persistence API(JPA)を利用出来ます。</li>
+					<li><a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeploy">SMART deploy</a>を利用することで永続ユニットごとに永続クラスとマッピングファイルを自動的に検出し登録出来ます。</li>
+					<li>効率的なテストをサポートします。</li>
+				</ul>
+				</dd>
+			</dl>
+			<dl>
+				<dt>Kuina-Daoとの連携</dt>
+				<dd>S2EclipseLink-JPAは、Daoフレームワークである<a href="http://kuina.seasar.org/ja/">Kuina-Dao</a>上で動作可能です。
+				Kuina-Daoを利用すると定型的なコードや動的な問い合わせのためのコードをほとんど書く必要がなくなります。 S2EclipseLink-JPAはKuina-Daoと合わせて利用することをお勧めします。
+				Kuina-Daoを利用した開発方法については<a href="http://kuina.seasar.org/ja/firststep/index.html">ファーストステップガイド</a>を参照してください。
+				</dd>
+			</dl>
+		</section>
+		<section name="News">
+			<dl>
+				<dt>2008/06/28</dt>
+				<dd>
+					<div>
+						S2EclipseLink-JPA 1.0.0-rc1 をリリースしました。（<a href="downloads.html">ダウンロード</a>）
+					</div>
+				</dd>
+			</dl>
+		</section>
+	</body>
+</document>

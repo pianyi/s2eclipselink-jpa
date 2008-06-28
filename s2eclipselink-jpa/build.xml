@@ -1,0 +1,44 @@
+<project name="s2eclipselink-jpa" default="dist" basedir=".">
+	<tstamp>
+		<format property="releaseDate" pattern="yyyy-MM-dd" locale="ja,JP"/>
+	</tstamp>
+
+	<target name="dist" depends="fix-site">
+		<mkdir dir="target/site/downloads/${releaseDate}"/>
+		<zip zipfile="target/site/downloads/${releaseDate}/S2EclipseLink-JPA-${ver}.zip">
+			<zipfileset prefix="s2eclipselink-jpa" dir=".">
+				<exclude name="**/build/**"/>
+				<exclude name="**/target/**"/>
+			</zipfileset>
+			<zipfileset prefix="s2eclipselink-jpa/lib" dir="target">
+				<include name="s2eclipselink-jpa-${ver}.jar"/>
+			</zipfileset>
+			<zipfileset prefix="s2eclipselink-jpa/libsrc" dir="target">
+				<include name="s2eclipselink-jpa-${ver}-sources.jar"/>
+			</zipfileset>
+			<zipfileset prefix="s2eclipselink-jpa/resources" dir="src/test/resources">
+				<include name="jpa.dicon"/>
+			</zipfileset>
+			<zipfileset prefix="s2eclipselink-jpa/resources/META-INF" dir="src/test/resources/META-INF">
+				<include name="persistence.xml"/>
+			</zipfileset>
+			<zipfileset prefix="s2eclipselink-jpa/doc" dir="target/site">
+			</zipfileset>
+		</zip>
+	</target>
+	
+	<target name="fix-site">
+		<mkdir dir="target/site/en"/>
+		<move todir="target/site/en">
+			<fileset dir="target/site">
+				<exclude name="apidocs/**"/>
+				<exclude name="en/**"/>
+				<exclude name="ja/**"/>
+				<exclude name="index.html.en"/>
+				<exclude name="index.html.ja"/>
+			</fileset>
+		</move>
+		<delete file="target/site/ja/index.html.en"/>
+		<delete file="target/site/ja/index.html.ja"/>
+	</target>
+</project>

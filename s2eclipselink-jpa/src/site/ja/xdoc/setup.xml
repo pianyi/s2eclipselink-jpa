@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<properties>
+		<title>セットアップ</title>
+	</properties>
+	<body>
+		<section name="プロジェクトのインポート">
+		<p>JDK5以上が必要です。</p>
+		<p>あらかじめ<a href="http://s2container.seasar.org/2.4/ja/">S2ContainerとS2Tiger</a>をダウンロードして、EclipseのJavaプロジェクトとしてワークスペースにインポートしてください。</p>
+		<p>S2Container2.4.25とS2Tiger2.4.25で動作確認をしています。</p>
+		<p>S2EclipseLink-JPA-1.0.X.zipを解凍してできたs2eclipselink-jpaディレクトリをEclipseのJavaプロジェクトとしてワークスペースにインポートしてください。</p>
+		</section>
+		<section name="必要なjarファイル">
+		<p>S2EclipseLink-JPAとして必要なjarファイルは、s2eclipselink-jpa/libにそろっています（ただし、h2-1.0.XX.jarはテスト用であるため動作に必須ではありません。）。
+		この他に<a href="http://s2container.seasar.org/2.4/ja/">S2ContainerとS2Tiger</a>のjarファイルが必要です。</p>
+		</section>
+		<section name="クラスパス">
+		<p>以下のファイルにクラスパスを通します。resourceのファイル（特にconvention.diconとjdbc.dicon）はプロジェクトに適した設定に変更し使用してください。</p>
+		<ul>
+			<li>s2eclipselink-jpa/libのjarファイル</li>
+			<li>s2eclipselink-jpa/resources(jpa.dicon、META-INF/persistence.xml)</li>
+			<li>Seasar2のresources(convention.dicon、creator.dicon、customizer.dicon、jdbc.dicon、log4j.properties)</li>
+		</ul>
+		</section>
+		<section name="データベース">
+		<p>簡単に機能を試すことが出来るように、RDBMSである<a href="http://www.h2database.com/html/frame_ja.html">H2 Database Engine</a>(h2-1.0.XX.jar)がS2EclipseLink-JPAに含まれています。</p>
+		</section>
+	</body>
+</document>
