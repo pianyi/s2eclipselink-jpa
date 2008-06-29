@@ -6,7 +6,7 @@
 	<groupId>org.seasar.eclipselink</groupId>
 	<artifactId>s2eclipselink-jpa</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.0-rc1-SNAPSHOT</version>
+	<version>1.0.0-rc1</version>
 	<name>s2eclipselink-jpa</name>
 	<url>http://s2eclipselink.sandbox.seasar.org/</url>
 	<issueManagement>
