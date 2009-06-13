@@ -37,13 +37,6 @@ public class HSQLDBPlatform extends HSQLPlatform {
     }
     
     /**
-     * @see oracle.toplink.essentials.internal.databaseaccess.DatabasePlatform#supportsNativeSequenceNumbers()
-     */
-    public boolean supportsNativeSequenceNumbers() {
-        return true;
-    }
-    
-    /**
      * @see oracle.toplink.essentials.internal.databaseaccess.DatabasePlatform#buildSelectQueryForNativeSequence(java.lang.String, java.lang.Integer)
      */
     public ValueReadQuery buildSelectQueryForSequenceObject(String seqName, Integer size) {
@@ -63,4 +56,13 @@ public class HSQLDBPlatform extends HSQLPlatform {
             return getTableQualifier() + "." + seqName;
         }
     }
+
+	/**
+	 * @see org.eclipse.persistence.internal.databaseaccess.DatabasePlatform#supportsSequenceObjects()
+	 */
+	@Override
+	public boolean supportsSequenceObjects() {
+		return true;
+	}
+
 }
